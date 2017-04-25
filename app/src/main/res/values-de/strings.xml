@@ -11,13 +11,11 @@
     <string name="datei_lese_fehler">Fehler beim Lesen der Datei!</string>
     <string name="datei_speichern_fehler">Fehler beim Speichern der Datei! Text in Zwischenablage kopiert</string>
     <string name="ordner_erstellen_fehler">Ordner konnte nicht erstellt werden!</string>
-    <string name="init_fehler">Fehler beim Füllen der Liste! App neu öffnen!</string>
+    <string name="init_fehler">Fehler beim Füllen der Liste! Programm beendet!</string>
     <string name="simple_error">Fehler!</string>
     <string name="share_error">Fehler beim Teilen!</string>
     <string name="no_external_storage_found">Kein externen Speicher gefunden</string>
     <string name="cant_move_file">Datei kann nicht verschoben werden!</string>
-    <string name="clipboard_paste_fehler">Zwischenablage darf nur Text enthalten!</string>
-    <string name="error_cannot_read_file">Datei kann nicht gelesen werden</string>
 
     <!-- Textbox -->
     <string name="insert_text_here">Hier Text eingeben</string>
@@ -73,9 +71,6 @@
     <string name="hat_zeit">Hat Zeit!</string>
     <string name="zurueck_setzen">Zurücksetzen</string>
     <string name="no_name_given">Kein Name vergeben</string>
-    <string name="share_file_dialog_message">Als Datei oder Text teilen?</string>
-    <string name="file">Datei</string>
-    <string name="text">Text</string>
 
     <!-- Information -->
     <string name="info_copied_to_clipboard">Text in Zwischenablage kopiert</string>
@@ -89,7 +84,7 @@
     <string name="info_nichtspeicherbare_zeichen">Text enthält nichtspeicherbare Zeichen!</string>
     <string name="info_notiz_gespeichert">Notiz gespeichert</string>
 
-    <!-- Neues --><!-- Nur dass alles hier eingefügt wird und nicht da oben -->
-    <string name="Neu">Neues hier drunter…</string>
+    <!-- Neues -->
+    <string name="Neu">Neu</string> <!-- Nur dass alles hier eingefügt wird und nicht da oben -->
 
 </resources>

@@ -1,5 +1,6 @@
 package daniel.com.notizapp.array_adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
@@ -10,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,58 +20,54 @@ import daniel.com.notizapp.file.NotizFile;
 import daniel.com.notizapp.util.Constants;
 
 /**
- * Created by Tristan on 29.04.2017.
+ * Created by Tristan on 29.12.2016.
  */
 
 public class CustomMultiSelectAdapter extends ArrayAdapter<NotizFile> {
+    private final Context context;
 
     private SharedPreferences preferences;
-    private final Context context;
-    private final List<NotizFile> dataList;
-    private boolean isSelected[];
+    private List<TextViewHolder> holderList;
+    private List<NotizFile> checkedItems;
+    private List<NotizFile> data;
 
-    public CustomMultiSelectAdapter(Context context, List<NotizFile> dataList) {
-        super(context, R.layout.layout_listview_row_multi_choice, dataList);
+    public CustomMultiSelectAdapter(Context context, List<NotizFile> data) {
+        super(context, R.layout.layout_listview_row_multi_choice, data);
         this.context = context;
-        this.dataList = dataList;
-        isSelected = new boolean[dataList.size()];
+        this.data = data;
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        checkedItems = new ArrayList<>();
+        holderList = new ArrayList<>();
     }
 
-    @Override
-    public int getCount() {
-        return dataList.size();
-    }
-
-    @Override
-    public NotizFile getItem(int position) {
-        return dataList.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
+    public List<NotizFile> getCheckedItems() {
+        return checkedItems;
     }
 
     @NonNull
     @Override
-    public View getView(final int position, View view, @NonNull ViewGroup parent) {
-        final ViewHolder holder;
-        if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.layout_listview_row_multi_choice, null);
-            holder = new ViewHolder();
-            holder.relativeLayout = (LinearLayout) view.findViewById(R.id.row_relative_layout);
-            holder.checkedTextView = (CheckedTextView) view.findViewById(R.id.checked_list_view_row);
+    public View getView(final int position, final View convertView, @NonNull ViewGroup parent) {
+        View row = convertView;
+        final TextViewHolder holder;
 
-            view.setTag(holder);
+        if (row == null) {
+            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+            row = inflater.inflate(R.layout.layout_listview_row_multi_choice, parent, false);
+
+            holder = new TextViewHolder();
+            holder.checkedTextView = (CheckedTextView) row.findViewById(R.id.checked_list_view_row);
+            holder.notizFile = data.get(position);
+            // Reihe zwischenspeichern
+            holderList.add(holder);
+
+            row.setTag(holder);
         } else {
-            holder = (ViewHolder) view.getTag();
+            holder = (TextViewHolder) row.getTag();
         }
-        NotizFile notizFile = dataList.get(position);
-        String rowText = notizFile.getName();
+        String rowText = holder.notizFile.getName();
         rowText = rowText.equals(NotizFile.NO_NAME_SET) ?
-                notizFile.getText().isEmpty() ? "Notiz" + position : notizFile.getText() :
-                rowText;
+                data.get(position).getText().isEmpty() ? "Notiz " + position : data.get(position).getText()
+                : rowText;
 
         int max_rows;
         float textSize;
@@ -93,65 +89,50 @@ public class CustomMultiSelectAdapter extends ArrayAdapter<NotizFile> {
         holder.setMaxRows(max_rows);
         holder.setTextSize(textSize);
         holder.setText(rowText);
-        ColorDrawable backroundColor = new ColorDrawable(dataList.get(position).getWichtigkeit().getColor());
-        view.setBackground(backroundColor);
+        ColorDrawable backroundColor = new ColorDrawable(holder.notizFile.getWichtigkeit().getColor());
+        row.setBackground(backroundColor);
 
-        holder.checkedTextView.setText(rowText);
-        holder.checkedTextView.setChecked(isSelected[position]);
-
-        holder.checkedTextView.setOnClickListener(new View.OnClickListener() {
+        // Markiert bzw. demarkiert die Reihe und fügt die Notiz zum Array hinzu
+        row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // set the check text view
-                /*boolean flag = holder.checkedTextView.isChecked();
-                holder.checkedTextView.setChecked(!flag);
-                isSelected[position] = !isSelected[position];*/
-                selectBox(position, !holder.checkedTextView.isChecked());
+                TextViewHolder tag = (TextViewHolder) v.getTag();
+                tag.checkedTextView.setChecked(!tag.checkedTextView.isChecked());
+                try {
+                    if (tag.checkedTextView.isChecked()) {
+                        checkedItems.add(holderList.get(position).notizFile);
+                    } else {
+                        checkedItems.remove(holderList.get(position).notizFile);
+                    }
+                } catch (Exception e) {
+                    try {
+                        checkedItems.remove(holderList.get(position).notizFile);
+                    } catch (Exception ignored) {
+                    }
+                }
             }
         });
 
-        return view;
+        return row;
     }
 
-    /**
-     * Setzt einen Haken in die Checkbox an der angegebenen Position (true)
-     * oder löscht diese (false).
-     * @param position Position der Checkbox in der Liste
-     * @param check    Bei true wird der Haken gesetzt und bei false entfernt
-     */
-    public void selectBox(int position, boolean check) {
-        isSelected[position] = check;
-        notifyDataSetChanged();
-    }
-
-    /**
-     * Gibt das Array zurück. Dabei sind alle Checkboxen enthalten. Die Position der Checkbox in
-     * der Liste entspricht der Position im Array. An dieser Position steht entweder <b>true</b>,
-     * wenn ein Haken gesetzt wurde oder <b>false</b> andernfalls.
-     * @return Array mit den Flags
-     */
-    public boolean[] getSelectedFlags() {
-        return isSelected;
-    }
-
-    /**
-     * Zählt die ausgewählten Checkboxen.
-     * @return Anzahl ausgewählter Checkboxen
-     */
-    public int getSelectedFlagsCount() {
-        int count = 0;
-        for (boolean anIsSelected : isSelected) {
-            if (anIsSelected) {
-                count++;
-            }
+    public void setAllItemsChecked(boolean checked) {
+        if (checked) {
+            checkedItems = new ArrayList<>(data);
+        } else {
+            checkedItems.clear();
         }
-
-        return count;
+        for (TextViewHolder holder : holderList) {
+            holder.checkedTextView.setChecked(checked);
+        }
     }
 
-    private class ViewHolder {
-        LinearLayout relativeLayout;
-        CheckedTextView checkedTextView;
+    /**
+     * Hält die Daten der Reihe
+     */
+    private class TextViewHolder {
+        private CheckedTextView checkedTextView;
+        private NotizFile notizFile;
 
         void setText(String text) {
             if (checkedTextView != null) {
@@ -170,5 +151,10 @@ public class CustomMultiSelectAdapter extends ArrayAdapter<NotizFile> {
                 checkedTextView.setTextSize(textSize);
             }
         }
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
     }
 }

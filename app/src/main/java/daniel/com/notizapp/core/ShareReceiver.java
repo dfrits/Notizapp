@@ -3,7 +3,6 @@ package daniel.com.notizapp.core;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AbsListView;
@@ -11,14 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URI;
 import java.util.List;
 
 import daniel.com.notizapp.array_adapter.CustomSingleSelectAdapter;
@@ -32,8 +23,6 @@ import daniel.com.notizapp.util.Util;
  */
 public class ShareReceiver extends Activity {
     private final Context context = this;
-    public static final String EXTRA_URI = "EXTRA_URI";
-    public static final String EXTRA_TEXT = "EXTRA_TEXT";
 
     public static String folderPath;
 
@@ -59,38 +48,9 @@ public class ShareReceiver extends Activity {
      * @param intent ShareIntent
      */
     private void handleSendText(Intent intent) {
-        sharedText = intent.getStringExtra(EXTRA_TEXT);
+        sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (sharedText != null) {
             init();
-        } else {
-            sharedText = intent.getStringExtra(EXTRA_URI);
-            if (sharedText != null) {
-                URI uri = URI.create(sharedText);
-                if (uri.getPath().endsWith(".txt")) {
-                    init(uri);
-                }
-            }
-        }
-    }
-
-    /**
-     * Liest den Text von der Datei ein und ruft anschließen {@link ShareReceiver#init()} auf.
-     * @param uri Uri von der Datei
-     */
-    private void init(URI uri) {
-        try (BufferedReader br = new BufferedReader(new FileReader(new File(uri)))) {
-            StringBuilder sb = new StringBuilder();
-            String line = br.readLine();
-
-            while (line != null) {
-                sb.append(line);
-                sb.append(System.lineSeparator());
-                line = br.readLine();
-            }
-            sharedText = sb.toString();
-            init();
-        } catch (IOException e) {
-            Toast.makeText(context, R.string.error_cannot_read_file, Toast.LENGTH_SHORT).show();
         }
     }
 

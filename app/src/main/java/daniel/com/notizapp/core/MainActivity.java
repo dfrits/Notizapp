@@ -6,9 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout view;
     private Menu menu;
     private TextView sortedByLabel;
-    private SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.layout_main);
 
         PreferenceManager.setDefaultValues(this, R.xml.preference_general, false);
-        pref = PreferenceManager.getDefaultSharedPreferences(context);
 
         init();
     }
@@ -98,18 +92,9 @@ public class MainActivity extends AppCompatActivity {
      * Liest die Dateien aus und füllt die Liste.
      */
     private void initFiles() {
-
         files = Util.getAllNotices(context);
 
-        for (int i = 1; files == null && i < 10; i++) {
-            files = Util.getAllNotices(context);
-        }
-
-        if (files == null) {
-            Toast.makeText(context, R.string.datei_lese_fehler, Toast.LENGTH_SHORT).show();
-            files = new ArrayList<>();
-        }
-
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         ESortBy sort = ESortBy.getSorting(pref.getInt(Constants.SORT_BY_KEY, ESortBy.NOT_SORTED.ordinal()));
         NotizFile.setSort(sort);
         Collections.sort(files);
@@ -243,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
                 dialog = builder.create();
                 break;
             case R.id.share:
-                Intent intent = Util.createShareFileIntent(context, files.get(info.position), getExternalFilesDir(null));
+                Intent intent = Util.createShareFileIntent(files.get(info.position), getExternalFilesDir(null));
                 startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_title)));
                 return true;
             default:
@@ -275,6 +260,7 @@ public class MainActivity extends AppCompatActivity {
     // Titelleistenmenü
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = pref.edit();
         ESortBy sort;
         switch (item.getItemId()) {
@@ -296,10 +282,10 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.select_all:
                 CustomMultiSelectAdapter adapter = (CustomMultiSelectAdapter) listView.getAdapter();
-                if (adapter.getSelectedFlagsCount() < listView.getCount()) {
-                    checkAllItems(adapter, true);
+                if (adapter.getCheckedItems().size() < listView.getCount()) {
+                    adapter.setAllItemsChecked(true);
                 } else {
-                    checkAllItems(adapter, false);
+                    adapter.setAllItemsChecked(false);
                 }
                 return true;
             case R.id.action_settings:
@@ -308,12 +294,14 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("Activity", "Main");
                 startActivity(intent);
                 return true;
+            /*case R.id.action_sync:
+                return true;*/
             case R.id.menuNoSort:
                 editor.putInt(Constants.SORT_BY_KEY, ESortBy.NOT_SORTED.ordinal());
                 editor.apply();
                 NotizFile.setSort(ESortBy.NOT_SORTED);
                 Collections.sort(files);
-                ((CustomSingleSelectAdapter) listView.getAdapter()).notifyDataSetChanged();
+                ((CustomSingleSelectAdapter)listView.getAdapter()).notifyDataSetChanged();
                 setSortByLabel(ESortBy.NOT_SORTED);
                 return true;
             case R.id.menuSortName:
@@ -327,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.apply();
                 NotizFile.setSort(sort);
                 Collections.sort(files);
-                ((CustomSingleSelectAdapter) listView.getAdapter()).notifyDataSetChanged();
+                ((CustomSingleSelectAdapter)listView.getAdapter()).notifyDataSetChanged();
                 return true;
             case R.id.menuSortDate:
                 if (NotizFile.sortedBy() == ESortBy.DATE_ASC) {
@@ -340,7 +328,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.apply();
                 NotizFile.setSort(sort);
                 Collections.sort(files);
-                ((CustomSingleSelectAdapter) listView.getAdapter()).notifyDataSetChanged();
+                ((CustomSingleSelectAdapter)listView.getAdapter()).notifyDataSetChanged();
                 return true;
             case R.id.menuSortFavor:
                 if (NotizFile.sortedBy() == ESortBy.WICHTIG_ASC) {
@@ -353,17 +341,13 @@ public class MainActivity extends AppCompatActivity {
                 editor.apply();
                 NotizFile.setSort(sort);
                 Collections.sort(files);
-                ((CustomSingleSelectAdapter) listView.getAdapter()).notifyDataSetChanged();
+                ((CustomSingleSelectAdapter)listView.getAdapter()).notifyDataSetChanged();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    /**
-     * Setzt das Label über der Liste, wonach gerade sortiert wird.
-     * @param sortBy Aktuelle Sortierung
-     */
     private void setSortByLabel(ESortBy sortBy) {
         switch (sortBy) {
             case NOT_SORTED:
@@ -450,58 +434,19 @@ public class MainActivity extends AppCompatActivity {
     public void rightFloatButton(View view) {
         // Files löschen
         if (files.size() != 0 && rightFloatButton.getText().equals(getResources().getString(R.string.delete_notice))) {
-            boolean isSelected[] = ((CustomMultiSelectAdapter) listView.getAdapter()).getSelectedFlags();
-            final ArrayList<NotizFile> selectedItems = new ArrayList<>();
-
-            for (int i = 0; i < isSelected.length; i++) {
-                if (isSelected[i]) {
-                    selectedItems.add(files.get(i));
-                }
+            List<NotizFile> checkedFiles = ((CustomMultiSelectAdapter) listView.getAdapter()).getCheckedItems();
+            for (NotizFile file : checkedFiles) {
+                file.delete();
             }
-
-            final Handler handler = new Handler() {
-                @Override
-                public void handleMessage(Message mesg) {
-                    throw new RuntimeException();
-                }
-            };
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage(R.string.delete_file_dialog_message);
-            builder.setPositiveButton(R.string.ok_button_text, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    for (NotizFile file : selectedItems) {
-                        file.delete();
-                    }
-                    handler.sendMessage(handler.obtainMessage());
-                }
-            });
-            builder.setNegativeButton(R.string.cancel_button_text, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    handler.sendMessage(handler.obtainMessage());
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
-
-            try { Looper.loop(); }
-            catch(RuntimeException ignored) {}
-
             initFiles();
         }
         // Files teilen
-        else if (files.size() != 0 && rightFloatButton.getText().equals(getResources().getString(R.string.share))) {
-            boolean isSelected[] = ((CustomMultiSelectAdapter) listView.getAdapter()).getSelectedFlags();
-            ArrayList<NotizFile> selectedItems = new ArrayList<>();
+        if (files.size() != 0 && rightFloatButton.getText().equals(getResources().getString(R.string.share))) {
+            List<NotizFile> checkedFiles = ((CustomMultiSelectAdapter) listView.getAdapter()).getCheckedItems();
 
-            for (int i = 0; i < isSelected.length; i++) {
-                if (isSelected[i]) {
-                    selectedItems.add(files.get(i));
-                }
-            }
-            Intent intent = selectedItems.size() == 1 ?
-                    Util.createShareFileIntent(context, selectedItems.get(0), getExternalFilesDir(null)) :
-                    Util.createShareFilesIntent(context, selectedItems, getExternalFilesDir(null));
+            Intent intent = checkedFiles.size() == 1 ?
+                    Util.createShareFileIntent(checkedFiles.get(0), getExternalFilesDir(null)) :
+                    Util.createShareFilesIntent(checkedFiles, getExternalFilesDir(null));
             if (intent != null) {
                 startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_title)));
             } else {
@@ -578,17 +523,6 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             finish();
-        }
-    }
-
-    /**
-     * Setzt entweder alle Checkboxen auf true oder false.
-     * @param adapter  Adapter, bei dem die Checkboxen gesetzt werden sollen
-     * @param checkAll Bei true werden alle mit einem Haken versehen. Bei false werden alle entfernt
-     */
-    private void checkAllItems(CustomMultiSelectAdapter adapter, boolean checkAll) {
-        for (int i = 0; i < adapter.getCount(); i++) {
-            adapter.selectBox(i, checkAll);
         }
     }
 }

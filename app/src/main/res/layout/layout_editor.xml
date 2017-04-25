@@ -36,26 +36,15 @@
             android:onClick="bTabPressed"/>
 
         <Button
-            android:id="@+id/bCopyToClipboard"
+            android:id="@+id/bClipboard"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@+id/bTab"
-            android:background="@mipmap/copy_to_clipboard"
-            android:onClick="bCopyToClipboardPressed"/>
-
-        <Button
-            android:id="@+id/bPasteFromClipboard"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="10dp"
-            android:layout_toStartOf="@+id/bCopyToClipboard"
-            android:background="@mipmap/paste_from_clipboard"
-            android:onClick="bPasteFromClipboardPressed"/>
+            android:background="@mipmap/clipboard"
+            android:onClick="bClipboardPressed"/>
     </RelativeLayout>
 
 
@@ -74,7 +63,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:ems="10"
-                android:hint="@string/insert_text_here"/>
+                android:hint="@string/insert_text_here"
+                android:inputType="textMultiLine"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

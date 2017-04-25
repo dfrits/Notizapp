@@ -39,8 +39,6 @@ import daniel.com.notizapp.util.Util;
  */
 
 public class NotizActivity extends AppCompatActivity {
-    public static final int STANDART_INPUT_TYPE = InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_AUTO_CORRECT | InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE;
-    public static final int INPUT_TYPE_CAPITAL = InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | STANDART_INPUT_TYPE;
     private final Context context = this;
 
     private boolean deleted = false;
@@ -171,13 +169,12 @@ public class NotizActivity extends AppCompatActivity {
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             case R.id.share:
-                Intent intent = Util.createShareFileIntent(context, notizFile, getExternalFilesDir(null));
+                Intent intent = Util.createShareFileIntent(notizFile, getExternalFilesDir(null));
 
                 if (intent == null) {
                     intent = new Intent(Intent.ACTION_SEND);
                     intent.setType(Constants.SHARE_TEXT_TYPE);
                     intent.putExtra(Intent.EXTRA_TEXT, textField.getText().toString());
-                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 }
                 startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_title)));
                 return true;
@@ -295,8 +292,8 @@ public class NotizActivity extends AppCompatActivity {
         boolean autoCapital = preferences.getBoolean(Constants.CAPITAL_SETTING_KEY, false);
 
         textField.setInputType(autoCapital ?
-                INPUT_TYPE_CAPITAL :
-                STANDART_INPUT_TYPE);
+                InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_MULTI_LINE :
+                InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         textField.setSingleLine(false);
         try {
             textField.setTextSize(Float.parseFloat(preferences.getString(Constants.TEXT_SIZE_SETTING_KEY, "18")));
@@ -318,11 +315,11 @@ public class NotizActivity extends AppCompatActivity {
     }
 
     /**
-     * Aktion des Copy-Buttons. Kopiert kompletten oder markierten Text in Zwischenablage.
+     * Aktion des Clipboard-Buttons. Kopiert aktuellen Text in Zwischenablage.
      * @param view .
      */
-    public void bCopyToClipboardPressed(View view) {
-        if (textField == null || textField.getText().toString().trim().isEmpty()) {
+    public void bClipboardPressed(View view) {
+        if (textField == null || textField.getText().toString().isEmpty()) {
             return;
         }
 
@@ -340,44 +337,6 @@ public class NotizActivity extends AppCompatActivity {
         ClipData clip = ClipData.newPlainText(text, text);
         clipboard.setPrimaryClip(clip);
         Toast.makeText(context, R.string.info_copied_to_clipboard, Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Aktion des Paste-Buttons. Fügt Text aus Zwischenablage ein. Ist ein Teil des Textes markiert,
-     * wird dieser ersetzt.
-     * @param view .
-     */
-    public void bPasteFromClipboardPressed(View view) {
-        if (textField == null) {
-            return;
-        }
-
-        try {
-            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-
-            if (!clipboard.hasPrimaryClip())
-                return;
-
-            ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
-
-            String pasteData = item.getText().toString();
-            String newText;
-
-            int selectionStart = textField.getSelectionStart();
-            int selectionEnd = textField.getSelectionEnd();
-            String oT = textField.getText().toString();
-
-
-            newText = oT.substring(0, selectionStart)
-                    + pasteData
-                    + oT.substring(selectionEnd);
-
-            textField.setText(newText);
-
-            textField.setSelection(selectionStart + pasteData.length());
-        } catch (Exception e) {
-            Toast.makeText(context, R.string.clipboard_paste_fehler, Toast.LENGTH_SHORT).show();
-        }
     }
 
     /**

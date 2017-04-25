@@ -11,13 +11,11 @@
     <string name="datei_lese_fehler">Error reading file!</string>
     <string name="datei_speichern_fehler">Error writing file! Copied text to Clipboard</string>
     <string name="ordner_erstellen_fehler">Folder could not be created!</string>
-    <string name="init_fehler">Error populating the list! Reopen the App!</string>
+    <string name="init_fehler">Error populating the list! App stopped!</string>
     <string name="simple_error">Error!</string>
     <string name="share_error">Error while sharing!</string>
     <string name="no_external_storage_found">No external storage found</string>
     <string name="cant_move_file">Can not move file!</string>
-    <string name="clipboard_paste_fehler">Just text is allowed!</string>
-    <string name="error_cannot_read_file">Can\'t read file</string>
 
     <!-- Textbox -->
     <string name="insert_text_here">Enter text here</string>
@@ -73,9 +71,6 @@
     <string name="hat_zeit">Take time!</string>
     <string name="zurueck_setzen">Reset</string>
     <string name="no_name_given">No name given</string>
-    <string name="share_file_dialog_message">Share as File or Text?</string>
-    <string name="file">File</string>
-    <string name="text">Text</string>
 
     <!-- Information -->
     <string name="info_copied_to_clipboard">Copied text to Clipboard</string>
@@ -89,7 +84,7 @@
     <string name="info_nichtspeicherbare_zeichen">Text contains unstoreable characters!</string>
     <string name="info_notiz_gespeichert">Note saved</string>
 
-    <!-- Neues --><!-- Nur dass alles hier eingefügt wird und nicht da oben -->
-    <string name="Neu">Neues hier drunter…</string>
+    <!-- Neues -->
+    <string name="Neu">New</string> <!-- Nur dass alles hier eingefügt wird und nicht da oben -->
 
 </resources>
