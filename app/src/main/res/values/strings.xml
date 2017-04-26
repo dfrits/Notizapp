@@ -16,6 +16,7 @@
     <string name="share_error">Error while sharing!</string>
     <string name="no_external_storage_found">No external storage found!</string>
     <string name="cant_move_file">Can not move file!</string>
+    <string name="clipboard_paste_fehler">Just text is allowed!</string>
 
     <!-- Textbox -->
     <string name="insert_text_here">Enter text here</string>
@@ -89,6 +90,6 @@
     <string name="info_notiz_gespeichert">Note saved</string>
 
     <!-- Neues -->
-    <string name="Neu">New</string> <!-- Nur dass alles hier eingefügt wird und nicht da oben -->
+    <string name="Neu">New</string><!-- Nur dass alles hier eingefügt wird und nicht da oben -->
 
 </resources>

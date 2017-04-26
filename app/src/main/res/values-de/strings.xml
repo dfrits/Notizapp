@@ -16,6 +16,7 @@
     <string name="share_error">Fehler beim Teilen!</string>
     <string name="no_external_storage_found">Kein externen Speicher gefunden</string>
     <string name="cant_move_file">Datei kann nicht verschoben werden!</string>
+    <string name="clipboard_paste_fehler">Zwischenablage darf nur Text enthalten!</string>
 
     <!-- Textbox -->
     <string name="insert_text_here">Hier Text eingeben</string>
@@ -85,6 +86,6 @@
     <string name="info_notiz_gespeichert">Notiz gespeichert</string>
 
     <!-- Neues -->
-    <string name="Neu">Neu</string> <!-- Nur dass alles hier eingefügt wird und nicht da oben -->
+    <string name="Neu">Neu</string><!-- Nur dass alles hier eingefügt wird und nicht da oben -->
 
 </resources>

@@ -315,11 +315,11 @@ public class NotizActivity extends AppCompatActivity {
     }
 
     /**
-     * Aktion des Clipboard-Buttons. Kopiert aktuellen Text in Zwischenablage.
+     * Aktion des Copy-Buttons. Kopiert kompletten oder markierten Text in Zwischenablage.
      * @param view .
      */
-    public void bClipboardPressed(View view) {
-        if (textField == null || textField.getText().toString().isEmpty()) {
+    public void bCopyToClipboardPressed(View view) {
+        if (textField == null || textField.getText().toString().trim().isEmpty()) {
             return;
         }
 
@@ -337,6 +337,44 @@ public class NotizActivity extends AppCompatActivity {
         ClipData clip = ClipData.newPlainText(text, text);
         clipboard.setPrimaryClip(clip);
         Toast.makeText(context, R.string.info_copied_to_clipboard, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Aktion des Paste-Buttons. Fügt Text aus Zwischenablage ein. Ist ein Teil des Textes markiert,
+     * wird dieser ersetzt.
+     * @param view .
+     */
+    public void bPasteFromClipboardPressed(View view) {
+        if (textField == null) {
+            return;
+        }
+
+        try {
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+
+            if (!clipboard.hasPrimaryClip())
+                return;
+
+            ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
+
+            String pasteData = item.getText().toString();
+            String newText;
+
+            int selectionStart = textField.getSelectionStart();
+            int selectionEnd = textField.getSelectionEnd();
+            String oT = textField.getText().toString();
+
+
+            newText = oT.substring(0, selectionStart)
+                    + pasteData
+                    + oT.substring(selectionEnd);
+
+            textField.setText(newText);
+
+            textField.setSelection(selectionStart + pasteData.length());
+        } catch (Exception e) {
+            Toast.makeText(context, R.string.clipboard_paste_fehler, Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
