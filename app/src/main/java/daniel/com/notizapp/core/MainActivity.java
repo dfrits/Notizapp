@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -282,10 +283,10 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.select_all:
                 CustomMultiSelectAdapter adapter = (CustomMultiSelectAdapter) listView.getAdapter();
-                if (adapter.getCheckedItems().size() < listView.getCount()) {
-                    adapter.setAllItemsChecked(true);
+                if (adapter.getSelectedFlags().length < listView.getCount()) {
+                    checkAllItems(adapter, true);
                 } else {
-                    adapter.setAllItemsChecked(false);
+                    checkAllItems(adapter, false);
                 }
                 return true;
             case R.id.action_settings:
@@ -434,19 +435,32 @@ public class MainActivity extends AppCompatActivity {
     public void rightFloatButton(View view) {
         // Files löschen
         if (files.size() != 0 && rightFloatButton.getText().equals(getResources().getString(R.string.delete_notice))) {
-            List<NotizFile> checkedFiles = ((CustomMultiSelectAdapter) listView.getAdapter()).getCheckedItems();
-            for (NotizFile file : checkedFiles) {
+            boolean isSelected[] = ((CustomMultiSelectAdapter) listView.getAdapter()).getSelectedFlags();
+            ArrayList<NotizFile> selectedItems = new ArrayList<>();
+
+            for(int i=0; i<isSelected.length; i++){
+                if(isSelected[i]){
+                    selectedItems.add(files.get(i));
+                }
+            }
+            for (NotizFile file : selectedItems) {
                 file.delete();
             }
             initFiles();
         }
         // Files teilen
-        if (files.size() != 0 && rightFloatButton.getText().equals(getResources().getString(R.string.share))) {
-            List<NotizFile> checkedFiles = ((CustomMultiSelectAdapter) listView.getAdapter()).getCheckedItems();
+        else if (files.size() != 0 && rightFloatButton.getText().equals(getResources().getString(R.string.share))) {
+            boolean isSelected[] = ((CustomMultiSelectAdapter) listView.getAdapter()).getSelectedFlags();
+            ArrayList<NotizFile> selectedItems = new ArrayList<>();
 
-            Intent intent = checkedFiles.size() == 1 ?
-                    Util.createShareFileIntent(checkedFiles.get(0), getExternalFilesDir(null)) :
-                    Util.createShareFilesIntent(checkedFiles, getExternalFilesDir(null));
+            for(int i=0; i<isSelected.length; i++){
+                if(isSelected[i]){
+                    selectedItems.add(files.get(i));
+                }
+            }
+            Intent intent = selectedItems.size() == 1 ?
+                    Util.createShareFileIntent(selectedItems.get(0), getExternalFilesDir(null)) :
+                    Util.createShareFilesIntent(selectedItems, getExternalFilesDir(null));
             if (intent != null) {
                 startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_title)));
             } else {
@@ -523,6 +537,12 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             finish();
+        }
+    }
+
+    private void checkAllItems(CustomMultiSelectAdapter adapter, boolean checkAll) {
+        for (int i = 0; i < adapter.getCount(); i++) {
+            listView.setItemChecked(i, checkAll);
         }
     }
 }

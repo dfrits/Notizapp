@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Locale;
 
 import daniel.com.notizapp.R;
+import daniel.com.notizapp.array_adapter.CustomMultiSelectAdapter;
 import daniel.com.notizapp.core.NotizActivity;
 import daniel.com.notizapp.core.SplashActivity;
 import daniel.com.notizapp.file.NotizFile;
@@ -274,7 +276,7 @@ public class Util {
      * verwendet werden.
      * @param file Datei, aus der gelesen werden soll
      * @return Kompletter Dateiinhalt
-     * @throws IOException
+     * @throws IOException .
      */
     @NonNull
     public static String readTextFromFile(File file) throws IOException {
