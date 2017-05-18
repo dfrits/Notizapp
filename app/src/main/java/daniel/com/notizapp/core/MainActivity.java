@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout view;
     private Menu menu;
     private TextView sortedByLabel;
+    private SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.layout_main);
 
         PreferenceManager.setDefaultValues(this, R.xml.preference_general, false);
+        pref = PreferenceManager.getDefaultSharedPreferences(context);
 
         init();
     }
@@ -93,9 +95,23 @@ public class MainActivity extends AppCompatActivity {
      * Liest die Dateien aus und füllt die Liste.
      */
     private void initFiles() {
-        files = Util.getAllNotices(context);
 
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        try {
+            files = Util.getAllNotices(context);
+        } catch (NullPointerException n) {
+            int i = pref.getInt(Constants.RETRIES_KEY, 0);
+            SharedPreferences.Editor editor = pref.edit();
+            if (i == 0) {
+                startActivity(new Intent(context, SplashActivity.class));
+                editor.putInt(Constants.RETRIES_KEY, 1);
+            } else {
+                Toast.makeText(context, R.string.init_fehler, Toast.LENGTH_SHORT).show();
+                editor.putInt(Constants.RETRIES_KEY, 0);
+            }
+            editor.apply();
+            finish();
+        }
+
         ESortBy sort = ESortBy.getSorting(pref.getInt(Constants.SORT_BY_KEY, ESortBy.NOT_SORTED.ordinal()));
         NotizFile.setSort(sort);
         Collections.sort(files);
@@ -261,7 +277,6 @@ public class MainActivity extends AppCompatActivity {
     // Titelleistenmenü
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = pref.edit();
         ESortBy sort;
         switch (item.getItemId()) {

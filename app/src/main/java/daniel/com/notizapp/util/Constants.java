@@ -9,6 +9,7 @@ public class Constants {
     public static final String FILE_FOLDER_NAME = "notizen";
     public static final String IS_NEW_FILE = "isNewFile";
     public static final String FILE_EXTRA_KEY = "File";
+    public static final String RETRIES_KEY = "Neuversuche";
 
     public static final String TITLEBAR_COLOR_SETTING_KEY = "favoriteColorTitleBar";
     public static final String EDITBAR_COLOR_SETTING_KEY = "favoriteColorEditBar";

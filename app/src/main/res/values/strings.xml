@@ -11,7 +11,7 @@
     <string name="datei_lese_fehler">Error reading file!</string>
     <string name="datei_speichern_fehler">Error writing file! Copied text to Clipboard</string>
     <string name="ordner_erstellen_fehler">Folder could not be created!</string>
-    <string name="init_fehler">Error populating the list! App stopped!</string>
+    <string name="init_fehler">Error populating the list!</string>
     <string name="simple_error">Error!</string>
     <string name="share_error">Error while sharing!</string>
     <string name="no_external_storage_found">No external storage found!</string>

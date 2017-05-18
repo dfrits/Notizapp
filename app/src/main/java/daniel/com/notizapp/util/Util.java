@@ -254,7 +254,11 @@ public class Util {
      * @return Liste mit Files
      */
     public static List<NotizFile> getAllNotices(Context context) {
-        File folder = new File(SplashActivity.getFolderPath());
+        String folderPath = SplashActivity.getFolderPath();
+        if (folderPath == null) {
+            throw new NullPointerException();
+        }
+        File folder = new File(folderPath);
         if (!folder.exists()) {
             if (!folder.mkdirs()) {
                 Toast.makeText(context, R.string.ordner_erstellen_fehler, Toast.LENGTH_SHORT).show();

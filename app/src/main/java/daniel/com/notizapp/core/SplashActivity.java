@@ -144,6 +144,6 @@ public class SplashActivity extends AppCompatActivity {
 
     public static String getFolderPath() {
         setFolderPath();
-        return folderPath;
+        return folderPath == null ? internalPath : folderPath;
     }
 }
