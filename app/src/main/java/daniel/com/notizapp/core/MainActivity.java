@@ -96,20 +96,15 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initFiles() {
 
-        try {
+        //files = Util.getAllNotices(context);
+
+        for(int i = 0; files == null && i < 10; i++){
             files = Util.getAllNotices(context);
-        } catch (NullPointerException n) {
-            int i = pref.getInt(Constants.RETRIES_KEY, 0);
-            SharedPreferences.Editor editor = pref.edit();
-            if (i == 0) {
-                startActivity(new Intent(context, SplashActivity.class));
-                editor.putInt(Constants.RETRIES_KEY, 1);
-            } else {
-                Toast.makeText(context, R.string.init_fehler, Toast.LENGTH_SHORT).show();
-                editor.putInt(Constants.RETRIES_KEY, 0);
-            }
-            editor.apply();
-            finish();
+        }
+
+        if (files == null) {
+            Toast.makeText(context, R.string.datei_lese_fehler, Toast.LENGTH_SHORT).show();
+            files = new ArrayList<>();
         }
 
         ESortBy sort = ESortBy.getSorting(pref.getInt(Constants.SORT_BY_KEY, ESortBy.NOT_SORTED.ordinal()));
@@ -317,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.apply();
                 NotizFile.setSort(ESortBy.NOT_SORTED);
                 Collections.sort(files);
-                ((CustomSingleSelectAdapter)listView.getAdapter()).notifyDataSetChanged();
+                ((CustomSingleSelectAdapter) listView.getAdapter()).notifyDataSetChanged();
                 setSortByLabel(ESortBy.NOT_SORTED);
                 return true;
             case R.id.menuSortName:
@@ -331,7 +326,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.apply();
                 NotizFile.setSort(sort);
                 Collections.sort(files);
-                ((CustomSingleSelectAdapter)listView.getAdapter()).notifyDataSetChanged();
+                ((CustomSingleSelectAdapter) listView.getAdapter()).notifyDataSetChanged();
                 return true;
             case R.id.menuSortDate:
                 if (NotizFile.sortedBy() == ESortBy.DATE_ASC) {
@@ -344,7 +339,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.apply();
                 NotizFile.setSort(sort);
                 Collections.sort(files);
-                ((CustomSingleSelectAdapter)listView.getAdapter()).notifyDataSetChanged();
+                ((CustomSingleSelectAdapter) listView.getAdapter()).notifyDataSetChanged();
                 return true;
             case R.id.menuSortFavor:
                 if (NotizFile.sortedBy() == ESortBy.WICHTIG_ASC) {
@@ -357,7 +352,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.apply();
                 NotizFile.setSort(sort);
                 Collections.sort(files);
-                ((CustomSingleSelectAdapter)listView.getAdapter()).notifyDataSetChanged();
+                ((CustomSingleSelectAdapter) listView.getAdapter()).notifyDataSetChanged();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -453,8 +448,8 @@ public class MainActivity extends AppCompatActivity {
             boolean isSelected[] = ((CustomMultiSelectAdapter) listView.getAdapter()).getSelectedFlags();
             ArrayList<NotizFile> selectedItems = new ArrayList<>();
 
-            for(int i=0; i<isSelected.length; i++){
-                if(isSelected[i]){
+            for (int i = 0; i < isSelected.length; i++) {
+                if (isSelected[i]) {
                     selectedItems.add(files.get(i));
                 }
             }
@@ -468,8 +463,8 @@ public class MainActivity extends AppCompatActivity {
             boolean isSelected[] = ((CustomMultiSelectAdapter) listView.getAdapter()).getSelectedFlags();
             ArrayList<NotizFile> selectedItems = new ArrayList<>();
 
-            for(int i=0; i<isSelected.length; i++){
-                if(isSelected[i]){
+            for (int i = 0; i < isSelected.length; i++) {
+                if (isSelected[i]) {
                     selectedItems.add(files.get(i));
                 }
             }

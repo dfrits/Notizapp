@@ -1,11 +1,17 @@
 package daniel.com.notizapp.core;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import java.io.BufferedReader;
@@ -27,6 +33,9 @@ import static daniel.com.notizapp.util.Constants.FOLDER_INTERNAL_DEST;
  */
 
 public class SplashActivity extends AppCompatActivity {
+    private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2;
+
     private static SharedPreferences pref;
     private static boolean hasExternal;
     private static String internalPath;
@@ -57,8 +66,13 @@ public class SplashActivity extends AppCompatActivity {
                 }
                 if (!externalPath.isEmpty()) {
                     File dir = new File(externalPath);
-                    hasExternal = dir.exists() || dir.mkdirs();
-                    testPermissions(dir);
+                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        testPermissionsOnRuntime();
+                        hasExternal = hasExternal && (dir.exists() || dir.mkdirs());
+                    } else {
+                        hasExternal = dir.exists() || dir.mkdirs();
+                        testPermissions(dir);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -85,6 +99,41 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(new Intent(this, MainActivity.class));
         }
         finish();
+    }
+
+    private void testPermissionsOnRuntime() throws SecurityException {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+            throw new SecurityException();
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+            throw new SecurityException();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                hasExternal = grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                return;
+            }
+            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                hasExternal = grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                return;
+            }
+        }
     }
 
     /**

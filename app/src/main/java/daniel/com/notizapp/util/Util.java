@@ -255,9 +255,7 @@ public class Util {
      */
     public static List<NotizFile> getAllNotices(Context context) {
         String folderPath = SplashActivity.getFolderPath();
-        if (folderPath == null) {
-            throw new NullPointerException();
-        }
+
         File folder = new File(folderPath);
         if (!folder.exists()) {
             if (!folder.mkdirs()) {
