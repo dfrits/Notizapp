@@ -96,9 +96,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initFiles() {
 
-        //files = Util.getAllNotices(context);
+        files = Util.getAllNotices(context);
 
-        for(int i = 0; files == null && i < 10; i++){
+        for(int i = 1; files == null && i < 10; i++){
             files = Util.getAllNotices(context);
         }
 
