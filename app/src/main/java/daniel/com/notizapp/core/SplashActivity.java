@@ -66,7 +66,7 @@ public class SplashActivity extends AppCompatActivity {
                 }
                 if (!externalPath.isEmpty()) {
                     File dir = new File(externalPath);
-                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         testPermissionsOnRuntime();
                         hasExternal = hasExternal && (dir.exists() || dir.mkdirs());
                     } else {
@@ -107,14 +107,14 @@ public class SplashActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-            throw new SecurityException();
+            //throw new SecurityException();
         }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-            throw new SecurityException();
+            //throw new SecurityException();
         }
     }
 
@@ -125,14 +125,17 @@ public class SplashActivity extends AppCompatActivity {
                 // If request is cancelled, the result arrays are empty.
                 hasExternal = grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                return;
+                break;
             }
             case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
                 // If request is cancelled, the result arrays are empty.
                 hasExternal = grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                return;
+                break;
             }
+            default:
+                hasExternal = false;
+                break;
         }
     }
 
