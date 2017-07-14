@@ -8,10 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,17 +100,50 @@ public class CustomMultiSelectAdapter extends ArrayAdapter<NotizFile> {
             @Override
             public void onClick(View v) {
                 // set the check text view
-                boolean flag = holder.checkedTextView.isChecked();
+                /*boolean flag = holder.checkedTextView.isChecked();
                 holder.checkedTextView.setChecked(!flag);
-                isSelected[position] = !isSelected[position];
+                isSelected[position] = !isSelected[position];*/
+                selectBox(position, !holder.checkedTextView.isChecked());
             }
         });
 
         return view;
     }
 
+    /**
+     * Setzt einen Haken in die Checkbox an der angegebenen Position (true)
+     * oder löscht diese (false).
+     * @param position Position der Checkbox in der Liste
+     * @param check    Bei true wird der Haken gesetzt und bei false entfernt
+     */
+    public void selectBox(int position, boolean check) {
+        isSelected[position] = check;
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Gibt das Array zurück. Dabei sind alle Checkboxen enthalten. Die Position der Checkbox in
+     * der Liste entspricht der Position im Array. An dieser Position steht entweder <b>true</b>,
+     * wenn ein Haken gesetzt wurde oder <b>false</b> andernfalls.
+     * @return Array mit den Flags
+     */
     public boolean[] getSelectedFlags() {
         return isSelected;
+    }
+
+    /**
+     * Zählt die ausgewählten Checkboxen.
+     * @return Anzahl ausgewählter Checkboxen
+     */
+    public int getSelectedFlagsCount() {
+        int count = 0;
+        for (boolean anIsSelected : isSelected) {
+            if (anIsSelected) {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     private class ViewHolder {

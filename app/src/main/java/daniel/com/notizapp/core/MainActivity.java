@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
         files = Util.getAllNotices(context);
 
-        for(int i = 1; files == null && i < 10; i++){
+        for (int i = 1; files == null && i < 10; i++) {
             files = Util.getAllNotices(context);
         }
 
@@ -293,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.select_all:
                 CustomMultiSelectAdapter adapter = (CustomMultiSelectAdapter) listView.getAdapter();
-                if (adapter.getSelectedFlags().length < listView.getCount()) {
+                if (adapter.getSelectedFlagsCount() < listView.getCount()) {
                     checkAllItems(adapter, true);
                 } else {
                     checkAllItems(adapter, false);
@@ -305,8 +305,6 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("Activity", "Main");
                 startActivity(intent);
                 return true;
-            /*case R.id.action_sync:
-                return true;*/
             case R.id.menuNoSort:
                 editor.putInt(Constants.SORT_BY_KEY, ESortBy.NOT_SORTED.ordinal());
                 editor.apply();
@@ -359,6 +357,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Setzt das Label über der Liste, wonach gerade sortiert wird.
+     * @param sortBy Aktuelle Sortierung
+     */
     private void setSortByLabel(ESortBy sortBy) {
         switch (sortBy) {
             case NOT_SORTED:
@@ -550,9 +552,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Setzt entweder alle Checkboxen auf true oder false.
+     * @param adapter  Adapter, bei dem die Checkboxen gesetzt werden sollen
+     * @param checkAll Bei true werden alle mit einem Haken versehen. Bei false werden alle entfernt
+     */
     private void checkAllItems(CustomMultiSelectAdapter adapter, boolean checkAll) {
         for (int i = 0; i < adapter.getCount(); i++) {
-            listView.setItemChecked(i, checkAll);
+            adapter.selectBox(i, checkAll);
         }
     }
 }
