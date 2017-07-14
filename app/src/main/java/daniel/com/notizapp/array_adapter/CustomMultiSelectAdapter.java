@@ -2,6 +2,7 @@ package daniel.com.notizapp.array_adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -92,6 +93,8 @@ public class CustomMultiSelectAdapter extends ArrayAdapter<NotizFile> {
         holder.setMaxRows(max_rows);
         holder.setTextSize(textSize);
         holder.setText(rowText);
+        ColorDrawable backroundColor = new ColorDrawable(dataList.get(position).getWichtigkeit().getColor());
+        view.setBackground(backroundColor);
 
         holder.checkedTextView.setText(rowText);
         holder.checkedTextView.setChecked(isSelected[position]);
