@@ -89,11 +89,20 @@ public class SplashActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
-        if (Intent.ACTION_SEND.equals(action) && type != null) {
+        if ((Intent.ACTION_SEND.equals(action) /*|| Intent.ACTION_SEND_MULTIPLE.equals(action)*/)
+                && type != null) {
             Intent intent1 = new Intent(this, ShareReceiver.class);
             intent1.setAction(action);
             intent1.setType(type);
-            intent1.putExtra(Intent.EXTRA_TEXT, intent.getStringExtra(Intent.EXTRA_TEXT));
+            String stringExtra = intent.getStringExtra(Intent.EXTRA_TEXT);
+
+            if (stringExtra == null) {
+                intent1.putExtra(ShareReceiver.EXTRA_URI,
+                        intent.getClipData().getItemAt(0).getUri().toString());
+            } else {
+                intent1.putExtra(ShareReceiver.EXTRA_TEXT, stringExtra);
+            }
+
             startActivity(intent1);
         } else {
             startActivity(new Intent(this, MainActivity.class));
