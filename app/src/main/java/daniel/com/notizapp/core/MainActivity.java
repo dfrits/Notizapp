@@ -6,6 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -465,16 +468,42 @@ public class MainActivity extends AppCompatActivity {
         // Files löschen
         if (files.size() != 0 && rightFloatButton.getText().equals(getResources().getString(R.string.delete_notice))) {
             boolean isSelected[] = ((CustomMultiSelectAdapter) listView.getAdapter()).getSelectedFlags();
-            ArrayList<NotizFile> selectedItems = new ArrayList<>();
+            final ArrayList<NotizFile> selectedItems = new ArrayList<>();
 
             for (int i = 0; i < isSelected.length; i++) {
                 if (isSelected[i]) {
                     selectedItems.add(files.get(i));
                 }
             }
-            for (NotizFile file : selectedItems) {
-                file.delete();
-            }
+
+            final Handler handler = new Handler() {
+                @Override
+                public void handleMessage(Message mesg) {
+                    throw new RuntimeException();
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage(R.string.delete_file_dialog_message);
+            builder.setPositiveButton(R.string.ok_button_text, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    for (NotizFile file : selectedItems) {
+                        file.delete();
+                    }
+                    handler.sendMessage(handler.obtainMessage());
+                }
+            });
+            builder.setNegativeButton(R.string.cancel_button_text, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    handler.sendMessage(handler.obtainMessage());
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+            try { Looper.loop(); }
+            catch(RuntimeException ignored) {}
+
             initFiles();
         }
         // Files teilen
