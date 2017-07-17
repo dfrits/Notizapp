@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
     // Popupmenü von ListView
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         final NotizFile notizFile = files.get(info.position);
         AlertDialog.Builder builder;
         AlertDialog dialog;
@@ -243,26 +243,9 @@ public class MainActivity extends AppCompatActivity {
                 dialog = builder.create();
                 break;
             case R.id.share:
-                builder = new AlertDialog.Builder(context);
-                builder.setMessage(R.string.share_file_dialog_message)
-                        .setPositiveButton(R.string.file, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = Util.createShareFileIntent(files.get(info.position),
-                                        getExternalFilesDir(null));
-                                startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_title)));
-                            }
-                        })
-                        .setNegativeButton(R.string.text, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = Util.createShareTextIntent(files.get(info.position)
-                                );
-                                startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_title)));
-                            }
-                        });
-                dialog = builder.create();
-                break;
+                Intent intent = Util.createShareFileIntent(files.get(info.position), getExternalFilesDir(null));
+                startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_title)));
+                return true;
             default:
                 return super.onContextItemSelected(item);
         }
@@ -509,39 +492,20 @@ public class MainActivity extends AppCompatActivity {
         // Files teilen
         else if (files.size() != 0 && rightFloatButton.getText().equals(getResources().getString(R.string.share))) {
             boolean isSelected[] = ((CustomMultiSelectAdapter) listView.getAdapter()).getSelectedFlags();
-            final ArrayList<NotizFile> selectedItems = new ArrayList<>();
+            ArrayList<NotizFile> selectedItems = new ArrayList<>();
 
             for (int i = 0; i < isSelected.length; i++) {
                 if (isSelected[i]) {
                     selectedItems.add(files.get(i));
                 }
             }
-            if (selectedItems.size() == 1) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage(R.string.share_file_dialog_message)
-                        .setPositiveButton(R.string.file, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = Util.createShareFileIntent(selectedItems.get(0),
-                                        getExternalFilesDir(null));
-                                startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_title)));
-                            }
-                        })
-                        .setNegativeButton(R.string.text, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = Util.createShareTextIntent(selectedItems.get(0));
-                                startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_title)));
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();
+            Intent intent = selectedItems.size() == 1 ?
+                    Util.createShareFileIntent(selectedItems.get(0), getExternalFilesDir(null)) :
+                    Util.createShareFilesIntent(selectedItems, getExternalFilesDir(null));
+            if (intent != null) {
+                startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_title)));
             } else {
-                Intent intent = Util.createShareFilesIntent(selectedItems, getExternalFilesDir(null));if (intent != null) {
-                    startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_title)));
-                } else {
-                    Toast.makeText(this, getResources().getText(R.string.no_external_storage_found), Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(this, getResources().getText(R.string.no_external_storage_found), Toast.LENGTH_SHORT).show();
             }
         }
 

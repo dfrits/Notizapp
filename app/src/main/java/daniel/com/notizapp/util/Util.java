@@ -1,21 +1,15 @@
 package daniel.com.notizapp.util;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -230,20 +224,6 @@ public class Util {
         } catch (IOException ignored) {
         }
         return new TempFile(file, fileToShare.getText());
-    }
-
-    /**
-     * Erzeugt einen Intent mit dem Text zum teilen.
-     * @param notizFile Datei, die geteilt werden soll
-     * @return Intent für den Chooser
-     */
-    public static Intent createShareTextIntent(NotizFile notizFile) {
-        String text = notizFile.getText();
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_SUBJECT, "TestSubject");
-        intent.putExtra(Intent.EXTRA_TEXT, text);
-        return intent;
     }
 
     /**

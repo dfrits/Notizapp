@@ -17,7 +17,6 @@
     <string name="no_external_storage_found">No external storage found!</string>
     <string name="cant_move_file">Can not move file!</string>
     <string name="clipboard_paste_fehler">Just text is allowed!</string>
-    <string name="error_cannot_read_file">Can\'t read file</string>
 
     <!-- Textbox -->
     <string name="insert_text_here">Enter text here</string>

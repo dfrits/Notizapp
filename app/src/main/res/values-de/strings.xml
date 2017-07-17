@@ -17,7 +17,6 @@
     <string name="no_external_storage_found">Kein externen Speicher gefunden</string>
     <string name="cant_move_file">Datei kann nicht verschoben werden!</string>
     <string name="clipboard_paste_fehler">Zwischenablage darf nur Text enthalten!</string>
-    <string name="error_cannot_read_file">Datei kann nicht gelesen werden</string>
 
     <!-- Textbox -->
     <string name="insert_text_here">Hier Text eingeben</string>
