@@ -86,6 +86,7 @@
     <string name="info_notiz_gespeichert">Notiz gespeichert</string>
 
     <!-- Neues -->
-    <string name="Neu">Neu</string><!-- Nur dass alles hier eingefügt wird und nicht da oben -->
+    <string name="Neu">Neu</string>
+    <string name="error_cannot_read_file">Datei kann nicht gelesen werden</string><!-- Nur dass alles hier eingefügt wird und nicht da oben -->
 
 </resources>

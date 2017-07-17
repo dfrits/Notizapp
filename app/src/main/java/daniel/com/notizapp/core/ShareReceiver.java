@@ -90,7 +90,7 @@ public class ShareReceiver extends Activity {
             sharedText = sb.toString();
             init();
         } catch (IOException e) {
-            Toast.makeText(context, "Datei kann nicht gelesen werden", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.error_cannot_read_file, Toast.LENGTH_SHORT).show();
         }
     }
 
