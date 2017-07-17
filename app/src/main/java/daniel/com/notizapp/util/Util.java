@@ -1,17 +1,22 @@
 package daniel.com.notizapp.util;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -30,7 +35,6 @@ import java.util.List;
 import java.util.Locale;
 
 import daniel.com.notizapp.R;
-import daniel.com.notizapp.array_adapter.CustomMultiSelectAdapter;
 import daniel.com.notizapp.core.NotizActivity;
 import daniel.com.notizapp.core.SplashActivity;
 import daniel.com.notizapp.file.NotizFile;
@@ -174,7 +178,7 @@ public class Util {
     }
 
     /**
-     * Erzeugt ein Intent mit Der Datei zum teilen.
+     * Erzeugt ein Intent mit der Datei zum teilen.
      * @param fileToShare      Datei, die geteilt werden soll
      * @param externalFilesDir Muss übergeben werden, weil es hier nicht erzeugt werden kann
      * @return Intent für den Chooser
@@ -226,6 +230,20 @@ public class Util {
         } catch (IOException ignored) {
         }
         return new TempFile(file, fileToShare.getText());
+    }
+
+    /**
+     * Erzeugt einen Intent mit dem Text zum teilen.
+     * @param notizFile Datei, die geteilt werden soll
+     * @return Intent für den Chooser
+     */
+    public static Intent createShareTextIntent(NotizFile notizFile) {
+        String text = notizFile.getText();
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "TestSubject");
+        intent.putExtra(Intent.EXTRA_TEXT, text);
+        return intent;
     }
 
     /**

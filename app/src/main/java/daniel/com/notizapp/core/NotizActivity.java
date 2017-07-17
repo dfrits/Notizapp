@@ -169,14 +169,25 @@ public class NotizActivity extends AppCompatActivity {
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             case R.id.share:
-                Intent intent = Util.createShareFileIntent(notizFile, getExternalFilesDir(null));
-
-                if (intent == null) {
-                    intent = new Intent(Intent.ACTION_SEND);
-                    intent.setType(Constants.SHARE_TEXT_TYPE);
-                    intent.putExtra(Intent.EXTRA_TEXT, textField.getText().toString());
-                }
-                startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_title)));
+                builder = new AlertDialog.Builder(context);
+                builder.setMessage(R.string.share_file_dialog_message)
+                        .setPositiveButton(R.string.file, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = Util.createShareFileIntent(notizFile,
+                                        getExternalFilesDir(null));
+                                startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_title)));
+                            }
+                        })
+                        .setNegativeButton(R.string.text, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = Util.createShareTextIntent(notizFile);
+                                startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_title)));
+                            }
+                        });
+                dialog = builder.create();
+                dialog.show();
                 return true;
             case R.id.wichtigkeit:
                 builder = new AlertDialog.Builder(context);

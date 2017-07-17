@@ -17,6 +17,7 @@
     <string name="no_external_storage_found">No external storage found!</string>
     <string name="cant_move_file">Can not move file!</string>
     <string name="clipboard_paste_fehler">Just text is allowed!</string>
+    <string name="error_cannot_read_file">Can\'t read file</string>
 
     <!-- Textbox -->
     <string name="insert_text_here">Enter text here</string>
@@ -62,6 +63,8 @@
     <!-- Dialog -->
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="file">File</string>
+    <string name="text">Text</string>
     <string name="move_files_dialog_message">Move Notices?</string>
     <string name="delete_file_dialog_message">Delete Notice?</string>
     <string name="name_file_dialog_message">Give the note a name!</string>
@@ -76,6 +79,7 @@
     <string name="hat_zeit">Take time!</string>
     <string name="zurueck_setzen">Reset</string>
     <string name="no_name_given">No name given</string>
+    <string name="share_file_dialog_message">Share as File or Text?</string>
 
     <!-- Information -->
     <string name="info_copied_to_clipboard">Copied text to Clipboard</string>
@@ -89,8 +93,7 @@
     <string name="info_nichtspeicherbare_zeichen">Text contains unstoreable characters!</string>
     <string name="info_notiz_gespeichert">Note saved</string>
 
-    <!-- Neues -->
-    <string name="Neu">New</string>
-    <string name="error_cannot_read_file">Can\'t read file</string><!-- Nur dass alles hier eingefügt wird und nicht da oben -->
+    <!-- Neues --><!-- Nur dass alles hier eingefügt wird und nicht da oben -->
+    <string name="Neu">Neues hier drunter…</string>
 
 </resources>
