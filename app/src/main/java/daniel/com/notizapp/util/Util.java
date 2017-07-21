@@ -47,7 +47,7 @@ public class Util {
     public static Intent getNewNoticeIntent(Context context) {
         Intent newNotice = new Intent(context, NotizActivity.class);
         newNotice.putExtra(Constants.FILE_EXTRA_KEY,
-                new NotizFile(Util.generatePath(), true));
+                new NotizFile(Util.generatePath(context), true));
         newNotice.putExtra(Constants.IS_NEW_FILE, true);
         return newNotice;
     }
@@ -143,9 +143,10 @@ public class Util {
     /**
      * Sucht einen freien Namen in dem aktuellen Pfad.
      * @return Pfad mit Dateiname
+     * @param context Der Context von der aufrufenden Activity
      */
-    public static String generatePath() {
-        String filePath = SplashActivity.getFolderPath() + "/Notiz";
+    public static String generatePath(Context context) {
+        String filePath = SplashActivity.getFolderPath(context) + "/Notiz";
         String newPath = filePath + "0.xml";
         File file = new File(newPath);
         for (int i = 1; file.exists(); i++) {
@@ -252,7 +253,7 @@ public class Util {
      * @return Liste mit Files
      */
     public static List<NotizFile> getAllNotices(Context context) {
-        String folderPath = SplashActivity.getFolderPath();
+        String folderPath = SplashActivity.getFolderPath(context);
 
         File folder = new File(folderPath);
         if (!folder.exists()) {
@@ -295,5 +296,9 @@ public class Util {
     public static String getCurrentDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_HH.mm.ss", Locale.getDefault());
         return sdf.format(new Date());
+    }
+
+    public static SharedPreferences getSharedPreferences(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context);
     }
 }

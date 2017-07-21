@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return true;
             case R.id.action_settings:
-                oldPath = SplashActivity.getFolderPath();
+                oldPath = SplashActivity.getFolderPath(context);
                 Intent intent = new Intent(this, SettingsActivity.class);
                 intent.putExtra("Activity", "Main");
                 startActivity(intent);
@@ -517,15 +517,15 @@ public class MainActivity extends AppCompatActivity {
      * sollen.
      */
     private void proofFolderDest() {
-        SplashActivity.setFolderPath();
-        if (oldPath != null && !oldPath.equals(SplashActivity.getFolderPath())) {
+        SplashActivity.setFolderPath(context);
+        if (oldPath != null && !oldPath.equals(SplashActivity.getFolderPath(context))) {
             if (new File(oldPath).listFiles().length > 0) {
                 // Notizen kopieren?
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setMessage(R.string.move_files_dialog_message);
                 builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Util.moveFiles(oldPath, SplashActivity.getFolderPath(), context, getString(R.string.progress_dialog_message));
+                        Util.moveFiles(oldPath, SplashActivity.getFolderPath(context), context, getString(R.string.progress_dialog_message));
                         dialog.cancel();
                     }
                 });

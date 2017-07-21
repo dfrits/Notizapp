@@ -131,8 +131,8 @@ public class NotizActivity extends AppCompatActivity {
         deleteFileIfNotNew();
 
         File file = new File(notizFile.getPath());
-        if (!SplashActivity.getFolderPath().equals(file.getParent())) {
-            notizFile.setPath(Util.generatePath());
+        if (!SplashActivity.getFolderPath(context).equals(file.getParent())) {
+            notizFile.setPath(Util.generatePath(context));
         }
 
         notizFile.setText(text);
