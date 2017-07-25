@@ -1,12 +1,12 @@
 package daniel.com.notizapp.core;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
+import daniel.com.notizapp.R;
 import daniel.com.notizapp.util.Util;
 
 import static daniel.com.notizapp.util.Constants.FILE_FOLDER_NAME;
@@ -35,8 +36,7 @@ public class SplashActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2;
 
-    private final Context context = this;
-
+    private static SharedPreferences pref;
     private static boolean hasExternal;
     private static String internalPath;
     private static String externalPath;
@@ -49,6 +49,8 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
 
         try {
             String secStore = System.getenv("SECONDARY_STORAGE");
@@ -82,7 +84,7 @@ public class SplashActivity extends AppCompatActivity {
 
         internalPath = getFilesDir().getAbsolutePath() + "/" + FILE_FOLDER_NAME;
 
-        setFolderPath(context);
+        setFolderPath();
 
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -179,12 +181,9 @@ public class SplashActivity extends AppCompatActivity {
 
     /**
      * Setzt den Pfad neu.
-     * @param context Der Context von der aufrufenden Activity
      */
-    public static void setFolderPath(Context context) {
+    public static void setFolderPath() {
         String dest;
-        SharedPreferences pref = Util.getSharedPreferences(context);
-
         try {
             dest = pref.getString(FOLDER_DEST_SETTING_KEY, FOLDER_INTERNAL_DEST);
         } catch (Exception e) {
@@ -204,8 +203,8 @@ public class SplashActivity extends AppCompatActivity {
         return hasExternal;
     }
 
-    public static String getFolderPath(Context context) {
-        setFolderPath(context);
+    public static String getFolderPath() {
+        setFolderPath();
         return folderPath == null ? internalPath : folderPath;
     }
 }

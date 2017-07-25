@@ -3,6 +3,7 @@ package daniel.com.notizapp.core;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AbsListView;
@@ -10,10 +11,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.List;
 
@@ -94,7 +98,7 @@ public class ShareReceiver extends Activity {
      * Initialisierung um eine Datei auszuwählen in der der Text gespeichert werden soll.
      */
     private void init() {
-        folderPath = SplashActivity.getFolderPath(context);
+        folderPath = SplashActivity.getFolderPath();
         ListView listView = (ListView) findViewById(R.id.listView);
 
         files = Util.getAllNotices(context);
