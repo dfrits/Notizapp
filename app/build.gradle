@@ -2,15 +2,14 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '28.0.3'
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         applicationId "daniel.com.notizapp"
         minSdkVersion 19
-        //noinspection OldTargetApi
         targetSdkVersion 27
-        versionCode 32
-        versionName "3.3.10"
+        versionCode 30
+        versionName "3.3.8"
     }
     buildTypes {
         release {
@@ -21,9 +20,9 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    testImplementation 'junit:junit:4.12'
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support:support-v4:27.1.1'
-    implementation 'com.commonsware.cwac:colormixer:0.6.1'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:27.0.0'
+    compile 'com.android.support:support-v4:27.0.0'
+    compile 'com.commonsware.cwac:colormixer:0.6.1'
 }
