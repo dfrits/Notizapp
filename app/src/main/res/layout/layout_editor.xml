@@ -74,8 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:ems="10"
-                android:hint="@string/insert_text_here"
-                android:inputType="textMultiLine"/>
+                android:hint="@string/insert_text_here"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
