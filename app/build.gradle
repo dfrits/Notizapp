@@ -9,8 +9,8 @@ android {
         minSdkVersion 19
         //noinspection OldTargetApi
         targetSdkVersion 27
-        versionCode 31
-        versionName "3.3.9"
+        versionCode 32
+        versionName "3.3.10"
     }
     buildTypes {
         release {
