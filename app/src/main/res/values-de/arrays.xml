@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="folder_destination_keys">
+        <item>Intern</item>
+        <item>Extern</item>
+    </string-array>
+
+    <string-array name="folder_destination_values">
+        <item>"internal"</item>
+        <item>"external"</item>
+    </string-array>
+
+</resources>

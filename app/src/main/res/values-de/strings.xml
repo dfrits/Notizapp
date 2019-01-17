@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Appname -->
+    <string name="app_name">Notizblock</string>
+
+    <!-- Titelbarstrings -->
+    <string name="titel_start_activity">Notizen</string>
+    <string name="titel_notiz_acitivity">Notiz</string>
+
+    <!-- Fehlermeldungen -->
+    <string name="datei_lese_fehler">Fehler beim Lesen der Datei!</string>
+    <string name="datei_speichern_fehler">Fehler beim Speichern der Datei! Text in Zwischenablage kopiert</string>
+    <string name="ordner_erstellen_fehler">Ordner konnte nicht erstellt werden!</string>
+    <string name="init_fehler">Fehler beim Füllen der Liste! App neu öffnen!</string>
+    <string name="simple_error">Fehler!</string>
+    <string name="share_error">Fehler beim Teilen!</string>
+    <string name="no_external_storage_found">Kein externen Speicher gefunden</string>
+    <string name="cant_move_file">Datei kann nicht verschoben werden!</string>
+    <string name="clipboard_paste_fehler">Zwischenablage darf nur Text enthalten!</string>
+    <string name="error_cannot_read_file">Datei kann nicht gelesen werden</string>
+
+    <!-- Textbox -->
+    <string name="insert_text_here">Hier Text eingeben</string>
+
+    <!-- Items -->
+    <string name="settings_title" translatable="true">Einstellungen</string>
+    <string name="new_notiz">New note</string>
+    <string name="delete_notice" translatable="true">Löschen</string>
+    <string name="save_notice" translatable="true">Notiz speichern</string>
+    <string name="share_title">Teilen mit</string>
+    <string name="share">Teilen</string>
+    <string name="select_all">Alles auswählen</string>
+    <string name="sortieren_nach">Sortieren nach</string>
+    <string name="sort_by_name">Nach Name</string>
+    <string name="sort_by_importance">Nach Wichtigkeit</string>
+    <string name="not_sorted">Nicht sortieren</string>
+    <string name="zwischenspeichern">Zwischenspeichern</string>
+
+    <!-- EditBar -->
+    <string name="insert_tab">Tab einfügen</string>
+    <string name="show_list">Liste anzeigen</string>
+
+    <!-- OverlayButtons -->
+    <string name="cancel_button_text">Abbrechen</string>
+    <string name="ok_button_text">OK</string>
+    <string name="new_file">Neue Datei</string>
+    <string name="shareReceiverTitle">Datei auswählen</string>
+
+    <!-- Settings -->
+    <string name="automatic_capital">Automatische Großschreibung</string>
+    <string name="Indication_of_notes">Maximale Zeilen</string>
+    <string name="summary_capital_setting">Jedes Wort am Satzanfang wird groß geschrieben</string>
+    <string name="max_rows_summary">Gibt an, wieviele Zeilen maximal angezeigt werden</string>
+    <string name="font_size">Schriftgröße</string>
+    <string name="folder_destination">Speicherort</string>
+    <string name="color_preference_titlebar_title">Farbe der Titelleiste</string>
+    <string name="color_preference_titlebar_summary">Wähle eine Farbe für die Titelleiste</string>
+    <string name="color_preference_editbar_title">Farbe der Editorleiste</string>
+    <string name="color_preference_editbar_summary">Wähle eine Farbe für die Editorleiste</string>
+
+    <!-- Dialog -->
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="move_files_dialog_message">Notizen verschieben</string>
+    <string name="delete_file_dialog_message">Notiz löschen?</string>
+    <string name="progress_dialog_message">Bitte warten!</string>
+    <string name="name_file_dialog_message">Gib der Notiz einen Namen!</string>
+    <string name="unknown_error">Unbekannter Fehler</string>
+    <string name="name_aendern">Name ändern</string>
+    <string name="favorisieren">Favorisieren</string>
+    <string name="dringend">Dringend!!!</string>
+    <string name="wichtig">Wichtig!!</string>
+    <string name="hat_zeit">Hat Zeit!</string>
+    <string name="zurueck_setzen">Zurücksetzen</string>
+    <string name="no_name_given">Kein Name vergeben</string>
+    <string name="share_file_dialog_message">Als Datei oder Text teilen?</string>
+    <string name="file">Datei</string>
+    <string name="text">Text</string>
+
+    <!-- Information -->
+    <string name="info_copied_to_clipboard">Text in Zwischenablage kopiert</string>
+    <string name="sort_by_date">Nach Datum</string>
+    <string name="sort_by_name_desc">Sortiert nach: Z -> A</string>
+    <string name="sort_by_name_asc">Sortiert nach: A -> Z</string>
+    <string name="sort_by_date_desc">Sortiert nach: Alt -> Neu</string>
+    <string name="sort_by_date_asc">Sortiert nach: Neu -> Alt</string>
+    <string name="sort_by_importance_desc">Sortiert nach: Unwichtig -> Dringend</string>
+    <string name="sort_by_importance_asc">Sortiert nach: Dringend -> Unwichtig</string>
+    <string name="info_nichtspeicherbare_zeichen">Text enthält nichtspeicherbare Zeichen!</string>
+    <string name="info_notiz_gespeichert">Notiz gespeichert</string>
+
+    <!-- Neues --><!-- Nur dass alles hier eingefügt wird und nicht da oben -->
+    <string name="Neu">Neues hier drunter…</string>
+
+</resources>

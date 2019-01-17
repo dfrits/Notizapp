@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/style_title"
+    tools:context="daniel.com.notizapp.core.MainActivity">
+
+    <TextView
+        android:textStyle="bold|italic"
+        android:textColor="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:id="@+id/sortedByLabel"/>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/sortedByLabel"
+        android:layout_above="@+id/overlayButtons"
+        android:divider="@android:color/black"
+        android:dividerHeight="0.5dp"/>
+
+    <LinearLayout
+        android:id="@+id/overlayButtons"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="bottom"
+        android:background="@color/backgroundFloatButtons"
+        android:orientation="horizontal"
+        android:padding="3dp"
+        android:visibility="invisible">
+
+        <Button
+            android:id="@+id/bButtonLeft"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:layout_weight="1"
+            android:background="@android:color/background_light"
+            android:onClick="leftFloatButton"
+            android:text="@string/cancel_button_text"/>
+
+        <Button
+            android:id="@+id/bButtonRight"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/background_light"
+            android:onClick="rightFloatButton"
+            android:text="@string/ok_button_text"/>
+    </LinearLayout>
+
+
+</RelativeLayout>

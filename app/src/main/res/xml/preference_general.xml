@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Allgemeines">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="automatic_capital"
+            android:summary="@string/summary_capital_setting"
+            android:title="@string/automatic_capital"/>
+        <EditTextPreference
+            android:defaultValue="3"
+            android:inputType="number"
+            android:key="max_rows"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="@string/max_rows_summary"
+            android:title="@string/Indication_of_notes"/>
+        <EditTextPreference
+            android:defaultValue="18"
+            android:inputType="number"
+            android:key="text_size"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/font_size"/>
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/folder_destination_keys"
+            android:entryValues="@array/folder_destination_values"
+            android:key="folder_destination"
+            android:title="@string/folder_destination"
+            android:summary="%s"/>
+        <com.commonsware.cwac.colormixer.ColorPreference
+            android:defaultValue="@color/colorPrimaryDark"
+            android:key="favoriteColorTitleBar"
+            android:summary="@string/color_preference_titlebar_summary"
+            android:title="@string/color_preference_titlebar_title"/>
+        <com.commonsware.cwac.colormixer.ColorPreference
+            android:defaultValue="@color/colorEditBar"
+            android:key="favoriteColorEditBar"
+            android:summary="@string/color_preference_editbar_summary"
+            android:title="@string/color_preference_editbar_title"/>
+
+    </PreferenceCategory>
+    <!--<PreferenceCategory android:title="Alarm">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:title="Vibration"
+            android:key="vibration_enabled" />
+        <RingtonePreference
+            android:defaultValue=""
+            android:title="Klingelton"
+            android:key="ringtone" />
+    </PreferenceCategory>-->
+</PreferenceScreen>
