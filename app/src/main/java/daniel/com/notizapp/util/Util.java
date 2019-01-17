@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
@@ -173,37 +174,41 @@ public class Util {
 
     /**
      * Erzeugt ein Intent mit der Datei zum teilen.
+     * @param context          Context der aufrufenden Aktivity
      * @param fileToShare      Datei, die geteilt werden soll
      * @param externalFilesDir Muss übergeben werden, weil es hier nicht erzeugt werden kann
      * @return Intent für den Chooser
      */
-    public static Intent createShareFileIntent(NotizFile fileToShare, File externalFilesDir) {
+    public static Intent createShareFileIntent(Context context, NotizFile fileToShare, File externalFilesDir) {
         TempFile tempFile = createTempFile(fileToShare, externalFilesDir, 0);
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_SUBJECT, "TestSubject");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Shared Note");
         intent.putExtra(Intent.EXTRA_TEXT, tempFile.getText().trim());
-        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempFile.getFile()));
+        intent.putExtra(Intent.EXTRA_STREAM,
+                FileProvider.getUriForFile(context, "daniel.com.notizapp.fileprovider", tempFile.getFile()));
         return intent;
     }
 
     /**
      * Erzeugt ein Intent mit den Dateien zum teilen.
+     * @param context          Context der aufrufenden Aktivity
      * @param filesToShare     Liste von Dateien, die geteilt werden sollen
      * @param externalFilesDir Muss übergeben werden, weil es hier nicht erzeugt werden kann
      * @return Intent für den Chooser
      */
-    public static Intent createShareFilesIntent(List<NotizFile> filesToShare, File externalFilesDir) {
+    public static Intent createShareFilesIntent(Context context, List<NotizFile> filesToShare, File externalFilesDir) {
         ArrayList<Uri> uris = new ArrayList<>();
         for (int i = 0; i < filesToShare.size(); i++) {
             NotizFile fileToShare = filesToShare.get(i);
             TempFile tempFile = createTempFile(fileToShare, externalFilesDir, i + 1);
-            uris.add(Uri.fromFile(tempFile.getFile()));
+            uris.add(FileProvider.getUriForFile(context, "daniel.com.notizapp.fileprovider", tempFile.getFile()));
         }
         Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, "testetset");
         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         return intent;
     }
 

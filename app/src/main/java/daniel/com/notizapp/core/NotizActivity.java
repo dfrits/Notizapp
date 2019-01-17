@@ -171,12 +171,13 @@ public class NotizActivity extends AppCompatActivity {
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             case R.id.share:
-                Intent intent = Util.createShareFileIntent(notizFile, getExternalFilesDir(null));
+                Intent intent = Util.createShareFileIntent(context, notizFile, getExternalFilesDir(null));
 
                 if (intent == null) {
                     intent = new Intent(Intent.ACTION_SEND);
                     intent.setType(Constants.SHARE_TEXT_TYPE);
                     intent.putExtra(Intent.EXTRA_TEXT, textField.getText().toString());
+                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 }
                 startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_title)));
                 return true;

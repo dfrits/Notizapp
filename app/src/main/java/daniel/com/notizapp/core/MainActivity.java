@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
                 dialog = builder.create();
                 break;
             case R.id.share:
-                Intent intent = Util.createShareFileIntent(files.get(info.position), getExternalFilesDir(null));
+                Intent intent = Util.createShareFileIntent(context, files.get(info.position), getExternalFilesDir(null));
                 startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_title)));
                 return true;
             default:
@@ -500,8 +500,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             Intent intent = selectedItems.size() == 1 ?
-                    Util.createShareFileIntent(selectedItems.get(0), getExternalFilesDir(null)) :
-                    Util.createShareFilesIntent(selectedItems, getExternalFilesDir(null));
+                    Util.createShareFileIntent(context, selectedItems.get(0), getExternalFilesDir(null)) :
+                    Util.createShareFilesIntent(context, selectedItems, getExternalFilesDir(null));
             if (intent != null) {
                 startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_title)));
             } else {
