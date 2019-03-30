@@ -27,11 +27,11 @@ import android.widget.Toast;
 
 import java.io.File;
 
+import daniel.com.notizapp.R;
 import daniel.com.notizapp.file.EWichtigkeit;
 import daniel.com.notizapp.file.NotizFile;
-import daniel.com.notizapp.util.Constants;
-import daniel.com.notizapp.R;
 import daniel.com.notizapp.setting.SettingsActivity;
+import daniel.com.notizapp.util.Constants;
 import daniel.com.notizapp.util.Util;
 
 /**
@@ -50,7 +50,7 @@ public class NotizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_editor);
 
-        textField = (EditText) findViewById(R.id.editText);
+        textField = findViewById(R.id.editText);
 
         Intent intent = getIntent();
         notizFile = (NotizFile) intent.getSerializableExtra(Constants.FILE_EXTRA_KEY);
@@ -292,8 +292,10 @@ public class NotizActivity extends AppCompatActivity {
         boolean autoCapital = preferences.getBoolean(Constants.CAPITAL_SETTING_KEY, false);
 
         textField.setInputType(autoCapital ?
-                InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_MULTI_LINE :
-                InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_MULTI_LINE
+                        | InputType.TYPE_TEXT_FLAG_AUTO_CORRECT | InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE :
+                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_AUTO_CORRECT
+                        | InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE);
         textField.setSingleLine(false);
         try {
             textField.setTextSize(Float.parseFloat(preferences.getString(Constants.TEXT_SIZE_SETTING_KEY, "18")));
@@ -307,7 +309,7 @@ public class NotizActivity extends AppCompatActivity {
         Util.setTitlebarColor(this);
 
         // Hintergrund der Editorleiste setzen
-        RelativeLayout editbar = (RelativeLayout) findViewById(R.id.editbar);
+        RelativeLayout editbar = findViewById(R.id.editbar);
         int color = ContextCompat.getColor(context, R.color.colorEditBar);
         int prefInt = preferences.getInt(Constants.EDITBAR_COLOR_SETTING_KEY, color);
         ColorDrawable colorDrawable = new ColorDrawable(prefInt);

@@ -70,10 +70,10 @@ public class MainActivity extends AppCompatActivity {
      * Initialisierung
      */
     private void init() {
-        listView = (ListView) findViewById(R.id.listView);
-        rightFloatButton = (Button) findViewById(R.id.bButtonRight);
-        view = (LinearLayout) findViewById(R.id.overlayButtons);
-        sortedByLabel = (TextView) findViewById(R.id.sortedByLabel);
+        listView = findViewById(R.id.listView);
+        rightFloatButton = findViewById(R.id.bButtonRight);
+        view = findViewById(R.id.overlayButtons);
+        sortedByLabel = findViewById(R.id.sortedByLabel);
 
         initFiles();
 

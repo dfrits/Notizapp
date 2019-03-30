@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="daniel.com.notizapp"
-    android:versionCode="3"
-    android:versionName="2.1">
+    package="daniel.com.notizapp">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE"/>
-
-    <uses-sdk
-        android:minSdkVersion="19"
-        android:targetSdkVersion="19" />
 
     <application
         android:allowBackup="true"
