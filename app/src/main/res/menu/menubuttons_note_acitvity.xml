@@ -39,4 +39,9 @@
         android:orderInCategory="200"
         android:title="@string/save_notice"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/sum_up"
+        android:orderInCategory="600"
+        android:title="@string/sum_up_title"
+        app:showAsAction="never" />
 </menu>

@@ -22,11 +22,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import daniel.com.notizapp.R;
 import daniel.com.notizapp.core.NotizActivity;
@@ -300,5 +305,35 @@ public class Util {
     public static String getCurrentDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_HH.mm.ss", Locale.getDefault());
         return sdf.format(new Date());
+    }
+
+    /**
+     * Rechnet alle ersten Zahlen in einer Zeile zusammen.
+     * @return Summe aller Zahlen. -1, wenn keine Zahlen gefunden wurden
+     */
+    public static double sumUpLines(String text) {
+        String[] split = text.split("\n");
+        double sum = Double.MIN_VALUE;
+
+        for (String line : split) {
+            try {
+                Scanner scanner = new Scanner(line);
+                String scanned = scanner.findInLine("\\d+.\\d+");
+                scanned = scanned.replace(",", ".");
+                double num = Double.parseDouble(scanned);
+                if (sum == Double.MIN_VALUE) {
+                    sum = 0;
+                }
+                sum += num;
+
+                BigDecimal bd = new BigDecimal(Double.toString(sum));
+                bd = bd.setScale(2, RoundingMode.HALF_UP);
+                sum = bd.doubleValue();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return sum;
     }
 }

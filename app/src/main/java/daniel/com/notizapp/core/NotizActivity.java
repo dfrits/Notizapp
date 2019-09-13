@@ -97,7 +97,7 @@ public class NotizActivity extends AppCompatActivity {
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     ClipData clip = ClipData.newPlainText(text, text);
                     clipboard.setPrimaryClip(clip);
-                    restorOldFile(oldText);
+                    restoreOldFile(oldText);
                     Toast.makeText(this, R.string.datei_speichern_fehler, Toast.LENGTH_LONG).show();
                 } catch (Exception ignored) {
                 }
@@ -109,7 +109,7 @@ public class NotizActivity extends AppCompatActivity {
      * Stellt die alte Datei wieder her. Gibt es keine oder keinen Text, dann wird sie gelöscht.
      * @param oldText Der alte Text
      */
-    private void restorOldFile(String oldText) {
+    private void restoreOldFile(String oldText) {
         if (oldText != null && !oldText.isEmpty()) {
             notizFile.setText(oldText);
             notizFile.safeFile();
@@ -274,9 +274,11 @@ public class NotizActivity extends AppCompatActivity {
                         Toast.makeText(context, R.string.info_notiz_gespeichert, Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
-                    restorOldFile(oldText);
+                    restoreOldFile(oldText);
                     Toast.makeText(context, R.string.info_nichtspeicherbare_zeichen, Toast.LENGTH_LONG).show();
                 }
+            case R.id.sum_up:
+                sumUp();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -529,5 +531,17 @@ public class NotizActivity extends AppCompatActivity {
             lastLineBreak = 0;
         }
         return lastLineBreak;
+    }
+
+    private void sumUp() {
+        String text = textField.getText().toString();
+
+        double sum = Util.sumUpLines(text);
+        if (sum != Double.MIN_VALUE) {
+            text += "\n" + getString(R.string.sum_result) + " " + sum;
+            text = text.replace(".", ",");
+
+            textField.setText(text);
+        }
     }
 }

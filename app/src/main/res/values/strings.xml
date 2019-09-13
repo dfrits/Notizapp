@@ -92,6 +92,8 @@
     <string name="sort_by_importance_asc">Sort by: Urgent -> Not Important</string>
     <string name="info_nichtspeicherbare_zeichen">Text contains unstoreable characters!</string>
     <string name="info_notiz_gespeichert">Note saved</string>
+    <string name="sum_up_title">Calculate Sum</string>
+    <string name="sum_result">Sum =</string>
 
     <!-- Neues --><!-- Nur dass alles hier eingefügt wird und nicht da oben -->
     <string name="Neu">Neues hier drunter…</string>

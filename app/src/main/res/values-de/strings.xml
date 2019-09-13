@@ -88,6 +88,8 @@
     <string name="sort_by_importance_asc">Sortiert nach: Dringend -> Unwichtig</string>
     <string name="info_nichtspeicherbare_zeichen">Text enthält nichtspeicherbare Zeichen!</string>
     <string name="info_notiz_gespeichert">Notiz gespeichert</string>
+    <string name="sum_up_title">Zusammenrechnen</string>
+    <string name="sum_result">Summe =</string>
 
     <!-- Neues --><!-- Nur dass alles hier eingefügt wird und nicht da oben -->
     <string name="Neu">Neues hier drunter…</string>
